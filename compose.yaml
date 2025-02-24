@@ -11,14 +11,15 @@ services:
       watch:
         - path: ./package.json
           action: rebuild
-        - path: ./next.config.js
-          action: rebuild
         - path: ./package-lock.json
+          action: rebuild
+        - path: ./next.config.js
           action: rebuild
         - path: .
           target: /app
           action: sync
+    volumes:
+      - .:/app  
+      - /app/node_modules  # Avoid overwriting node_modules
     env_file: 
-      - .env
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
+      - .env.local
