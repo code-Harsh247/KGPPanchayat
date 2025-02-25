@@ -1,5 +1,7 @@
 import "./globals.css";
 import Navbar from '@/Components/Navbar'
+import PromptBar from "@/Components/PromptBar";
+
 
 export default function RootLayout({ children }) {
   return (
@@ -8,6 +10,7 @@ export default function RootLayout({ children }) {
         <div className="h-screen flex flex-col">
           <Navbar />
           {children}
+          
         </div>
       </body>
     </html>
