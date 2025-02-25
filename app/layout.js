@@ -5,8 +5,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Navbar/>
-        {children}
+        <div className="h-screen flex flex-col">
+          <Navbar />
+          {children}
+        </div>
       </body>
     </html>
   );
