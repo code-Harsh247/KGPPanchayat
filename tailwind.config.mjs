@@ -8,9 +8,14 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary_orange: "#D57456",
+        primary_black: "#0F172A",
+        primary_grey: "#D9D9D9",
+        primary_grey_background: "#F2F2F2", 
       },
       fontFamily: {
-        Crimson: ["Crimson", "serif"],
+        Crimson: ["Crimson", "sans-serif"],
+        NT: ["NT", "sans-serif"],
       },
     },
   },

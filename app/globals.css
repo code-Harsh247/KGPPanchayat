@@ -9,3 +9,10 @@
     font-weight: normal;
     font-style: normal;
 }
+
+@font-face {
+    font-family: 'NT';
+    src: url(../public/Fonts/NT\ Fabulous.otf) format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
