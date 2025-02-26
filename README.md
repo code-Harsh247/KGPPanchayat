@@ -15,6 +15,15 @@ docker compose watch -d
 
 ## Credentials
 
+Make a .env.local file. 
+```bash
+PG_HOST=10.5.18.72
+PG_PORT=5432
+PG_USER=
+PG_PASSWORD=
+PG_DATABASE=
+```
+
 For the database credentials, drop me a DM :)
 
 ## Contributing
