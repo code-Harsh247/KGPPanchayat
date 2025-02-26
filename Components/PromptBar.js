@@ -1,8 +1,8 @@
 'use client'
 import React, { useRef } from "react";
-import { Input } from './ui/input'
+import { Input } from './ui/inputBox'
 import { Textarea } from "./ui/textarea";
-import { Button } from "./ui/button";
+import { Button } from "./ui/btn";
 
 const PromptBar = () => {
   const inputRef = useRef(null);
