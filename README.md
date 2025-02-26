@@ -13,6 +13,11 @@ To Enable Hot Reloading (Watches for file changes & syncs them inside the contai
 docker compose watch -d
 ```
 
+Or you can simply use
+```bash
+npm run dev
+```
+
 ## Credentials
 
 Make a .env.local file. 
