@@ -103,6 +103,14 @@ const Signup = () => {
                                 </FormItem>
                             )} />
 
+                            <FormField control={form1.control} name="password" render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Password</FormLabel>
+                                    <FormControl><Input type="text" placeholder="Enter Password" {...field} /></FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
+
                             <FormField control={form1.control} name="role" render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Role</FormLabel>
