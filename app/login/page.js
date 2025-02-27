@@ -7,8 +7,6 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-
 import { Button } from "@/Components/ui/btn";
 import { Input } from "@/Components/ui/inputBox";
 import {
@@ -19,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import useAuthStore from "@/States/auth";
 
 // Define form schema
 const formSchema = z.object({
@@ -32,7 +31,9 @@ const formSchema = z.object({
 
 const Login = () => {
   const router = useRouter();
+  const { login, loading: authLoading, error: authError } = useAuthStore();
   const [loading, setLoading] = useState(false);
+  
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: { phone_number: "", password: "" },
@@ -42,15 +43,17 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const { data } = await axios.post("/api/login", values, {
-        headers: { "Content-Type": "application/json" },
-      });
+      // Use the login function from the auth store
+      const result = await login(values);
       
-      toast.success("Login successful!");
-      router.push("/"); 
-
+      if (result.success) {
+        toast.success("Login successful!");
+        router.push("/"); 
+      } else {
+        toast.error(result.error || "Login failed. Please try again.");
+      }
     } catch (error) {
-      toast.error(error.response?.data?.error || "Login failed. Please try again.");
+      toast.error(error.message || "Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -107,8 +110,8 @@ const Login = () => {
               />
 
               {/* Submit Button */}
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Logging in..." : "Login"}
+              <Button type="submit" className="w-full" disabled={loading || authLoading}>
+                {(loading || authLoading) ? "Logging in..." : "Login"}
               </Button>
             </form>
           </Form>
