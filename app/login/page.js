@@ -4,6 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 import { Button } from "@/Components/ui/btn";
 import { Input } from "@/Components/ui/inputBox";
@@ -18,22 +22,38 @@ import {
 
 // Define form schema
 const formSchema = z.object({
-  PhoneNumber: z.string().min(10, {
+  phone_number: z.string().min(10, {
     message: "Enter a valid phone number.",
   }),
-  Password: z.string().min(8, {
+  password: z.string().min(8, {
     message: "Password must be at least 8 characters long.",
   }),
 });
 
 const Login = () => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: { PhoneNumber: "", Password: "" },
+    defaultValues: { phone_number: "", password: "" },
   });
 
-  function onSubmit(values) {
-    console.log(values);
+  async function onSubmit(values) {
+    setLoading(true);
+
+    try {
+      const { data } = await axios.post("/api/login", values, {
+        headers: { "Content-Type": "application/json" },
+      });
+      
+      toast.success("Login successful!");
+      router.push("/"); 
+
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -59,7 +79,7 @@ const Login = () => {
               {/* Phone Number Field */}
               <FormField
                 control={form.control}
-                name="PhoneNumber"
+                name="phone_number"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Phone Number</FormLabel>
@@ -74,7 +94,7 @@ const Login = () => {
               {/* Password Field */}
               <FormField
                 control={form.control}
-                name="Password"
+                name="password"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
@@ -87,8 +107,8 @@ const Login = () => {
               />
 
               {/* Submit Button */}
-              <Button type="submit" className="w-full">
-                Login
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Logging in..." : "Login"}
               </Button>
             </form>
           </Form>
@@ -101,16 +121,13 @@ const Login = () => {
             </a>
           </p>
         </div>
+      </motion.div>
 
-      </motion.div >
       {/* Bottom Image */}
       <div className="absolute hidden lg:block z-10 left-0 bottom-0 w-1/4 xl:w-1/4">
         <img src='./Images/LoginAuntie.svg' className="w-full object-contain" />
       </div>
     </div>
-
-
-
   );
 };
 
