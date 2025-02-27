@@ -8,6 +8,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter()
   const handleLogin = () =>{
+    console.log()
     router.push('/login')
   }
   return (
