@@ -7,10 +7,10 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import axios from "axios";
-import { Button } from "@/components/ui/btn";
-import { Input } from "@/components/ui/inputBox";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/Components/ui/btn";
+import { Input } from "@/Components/ui/inputBox";
+import { RadioGroup, RadioGroupItem } from "@/Components/ui/radio-group";
+import { Label } from "@/Components/ui/label";
 import {
     Form,
     FormControl,
@@ -18,13 +18,13 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form";
+} from "@/Components/ui/form";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/Components/ui/dropdown-menu";
 import { Check, ChevronDown } from "lucide-react";
 
 // education_level options

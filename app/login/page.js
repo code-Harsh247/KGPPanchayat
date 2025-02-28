@@ -16,7 +16,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/Components/ui/form";
 import useAuthStore from "@/States/auth";
 
 // Define form schema
