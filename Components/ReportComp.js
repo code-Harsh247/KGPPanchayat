@@ -2,12 +2,13 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-const ReportComp = ({ title, description }) => {
+const ReportComp = ({ title,name,description }) => {
     const router = useRouter();
     const handleClick = () => {
-        router.push(`/viewData/${title}`);
-    }
-
+        router.push(`/viewData?name=${encodeURIComponent(name)}&title=${encodeURIComponent(title)}`);
+    };
+    
+    
   return (
     <div className="w-full sm:w-full h-auto border rounded-md bg-[#FAEDE9] text-primary_orange flex flex-col justify-center items-start p-4 hover:bg-[#f4e2dc] transition duration-300"
     onClick={handleClick}>
