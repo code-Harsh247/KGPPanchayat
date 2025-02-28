@@ -50,7 +50,7 @@ const Page = () => {
           <ReportComp
             key={index}
             title={formatTableName(table.table_name)}
-            description={`Records from ${table.table_name}`}
+            description={`Records from ${formatTableName(table.table_name)}`}
           />
         ))
       ) : (
