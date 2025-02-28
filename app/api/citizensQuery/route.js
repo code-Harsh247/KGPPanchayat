@@ -1,16 +1,19 @@
 import { query } from "@/lib/database";
 
-export async function GET(req) {
+export async function POST(req) {
     try {
-        const { searchParams } = new URL(req.url);
-        const citizens_id = searchParams.get("citizens_id");
-        const user_id = searchParams.get("user_id");
-        const gender = searchParams.get("gender");
-        const date_of_birth = searchParams.get("date_of_birth");
-        const household_id = searchParams.get("household_id");
-        const occupation = searchParams.get("occupation");
-        const education_level = searchParams.get("education_level");
-        const income = searchParams.get("income");
+        const body = await req.json(); // Parse JSON body
+
+        const {
+            citizens_id,
+            user_id,
+            gender,
+            date_of_birth,
+            household_id,
+            occupation,
+            education_level,
+            income
+        } = body; // Extract parameters from the request body
 
         // Dynamic SQL Query
         let sql = "SELECT * FROM citizens WHERE 1=1";
@@ -53,7 +56,7 @@ export async function GET(req) {
 
         return Response.json({ results }, { status: 200 });
     } catch (e) {
-        console.log("Error in GET /api/citizensQuery", e);
+        console.log("Error in POST /api/citizensQuery", e);
         return Response.json({ message: "Something went wrong" }, { status: 500 });
     }
 }
