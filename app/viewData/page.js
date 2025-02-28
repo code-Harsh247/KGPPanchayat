@@ -12,18 +12,12 @@ const Page = () => {
   const fetchTables = async () => {
     try {
       const res = await axios.post("/api/fetchTables");
-      
-      console.log("API Response:", res.data);
-  
       if (Array.isArray(res.data.results)) {
-        console.log("Fetched tables:", res.data.results);
         setTables(res.data.results);
       } else {
-        console.log("No valid tables found in API response.");
         setTables([]);
       }
     } catch (error) {
-      console.error("Error fetching tables:", error);
       setTables([]);
     } finally {
       setLoading(false); // Mark loading as done
@@ -48,6 +42,8 @@ const Page = () => {
       ) : tables.length > 0 ? (
         tables.map((table, index) => (
           <ReportComp
+            onClick={() => console.log("Clicked table:", table)}
+            cursor="pointer"
             key={index}
             title={formatTableName(table.table_name)}
             description={`Records from ${formatTableName(table.table_name)}`}
