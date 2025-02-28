@@ -1,8 +1,39 @@
-import React from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import PromptBar from '@/Components/PromptBar';
 import ReportComp from '@/Components/ReportComp';
+import { formatTableName } from '@/lib/utils';
 
 const Page = () => {
+  const [tables, setTables] = React.useState([]);  
+  const [loading, setLoading] = React.useState(true); // Track loading state  
+  
+  const fetchTables = async () => {
+    try {
+      const res = await axios.post("/api/fetchTables");
+      
+      console.log("API Response:", res.data);
+  
+      if (Array.isArray(res.data.results)) {
+        console.log("Fetched tables:", res.data.results);
+        setTables(res.data.results);
+      } else {
+        console.log("No valid tables found in API response.");
+        setTables([]);
+      }
+    } catch (error) {
+      console.error("Error fetching tables:", error);
+      setTables([]);
+    } finally {
+      setLoading(false); // Mark loading as done
+    }
+  };
+  
+  React.useEffect(() => {
+    fetchTables();
+  }, []);
+
   return (
     <div className="w-full min-h-screen flex flex-col items-center p-4 sm:p-6">
       <h1 className="font-NT text-4xl sm:text-5xl md:text-6xl p-4 text-center">Data and Reports</h1>
@@ -11,11 +42,21 @@ const Page = () => {
         <PromptBar />
       </div>
       
-      <div className="w-full sm:w-[90%] lg:w-[80%] h-32 p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <ReportComp title="Citizen Data" description="Public records of the citizens" />
-        <ReportComp title="Agriculture Reports" description="Statistics on farming and crops" />
-        <ReportComp title="Health Records" description="Healthcare data and reports" />
-      </div>
+<div className="w-full sm:w-[90%] lg:w-[80%] h-32 p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {loading ? (
+        <p className="text-blue-500">Loading tables...</p> // Show loading message
+      ) : tables.length > 0 ? (
+        tables.map((table, index) => (
+          <ReportComp
+            key={index}
+            title={formatTableName(table.table_name)}
+            description={`Records from ${table.table_name}`}
+          />
+        ))
+      ) : (
+        <p className="text-red-500">No tables found</p>
+      )}
+    </div>
     </div>
   );
 };
