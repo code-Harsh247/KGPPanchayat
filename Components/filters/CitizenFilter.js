@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
 } from "@/Components/ui/dropdown-menu";
 import { Button } from "@/Components/ui/btn";
+import { toast } from "sonner";
 
 const CitizenFilter = ({ onApply }) => {
   const maxHouseholdId = useRef(null);
@@ -25,6 +26,7 @@ const CitizenFilter = ({ onApply }) => {
   });
 
   const handleApply = () => {
+    toast.success("Filters applied successfully");
     onApply(filters);
   };
 
@@ -34,6 +36,7 @@ const CitizenFilter = ({ onApply }) => {
 
   const handleClear = () => {
     // Reset all filters to empty values
+    toast.success("Filters cleared successfully");
     setFilters({
       gender: "",
       dateOfBirthStart: "",
@@ -47,19 +50,6 @@ const CitizenFilter = ({ onApply }) => {
       sortOrder: "asc",
     });
     
-    // Optionally, also apply the cleared filters immediately
-    onApply({
-      gender: "",
-      dateOfBirthStart: "",
-      dateOfBirthEnd: "",
-      householdIdMax: "",
-      householdIdMin: "",
-      educationLevel: "",
-      incomeMin: "",
-      incomeMax: "",
-      sortBy: "",
-      sortOrder: "asc",
-    });
   };
 
   // Toggle sort order between ascending and descending
