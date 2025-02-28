@@ -45,7 +45,9 @@ const Navbar = () => {
 
         {/* Show loading spinner before deciding between Log In / Profile */}
         {loading ? (
-          <Loader2 className="animate-spin w-6 h-6 text-gray-600" />
+          <div className="cursor-pointer w-1/2 h-10 flex justify-center items-center text-sm font-mediu" onClick={handleProfile}>
+            <Loader2 className="animate-spin w-1/2 h-1/2 text-primary_orange" />
+          </div>
         ) : isAuthenticated ? (
           <div className="cursor-pointer w-32 flex justify-center items-center text-lg font-medium border border-transparent hover:border-primary_grey hover:bg-[#F2F2F2] rounded-sm transition-all duration-300 ease-in-out active:scale-90" onClick={handleProfile}>
             Profile
@@ -72,17 +74,19 @@ const Navbar = () => {
             View Reports
           </div>
           {/* Show loading spinner before deciding between Log In / Profile */}
-        {loading ? (
-          <Loader2 className="animate-spin w-6 h-6 text-gray-600" />
-        ) : isAuthenticated ? (
-          <div className="cursor-pointer w-full h-12 border flex justify-center items-center text-lg font-medium hover:bg-primary_grey_background" onClick={handleProfile}>
-            Profile
-          </div>
-        ) : (
-          <div className="cursor-pointer w-full h-12 border flex justify-center items-center text-lg font-medium hover:bg-primary_grey_background" onClick={handleLogin}>
-            Log In
-          </div>
-        )}
+          {loading ? (
+            <div className="cursor-pointer w-full h-12 border flex justify-center items-center text-lg font-medium hover:bg-primary_grey_background" onClick={handleProfile}>
+              <Loader2 className="animate-spin w-6 h-6 text-primary_orange" />
+            </div>
+          ) : isAuthenticated ? (
+            <div className="cursor-pointer w-full h-12 border flex justify-center items-center text-lg font-medium hover:bg-primary_grey_background" onClick={handleProfile}>
+              Profile
+            </div>
+          ) : (
+            <div className="cursor-pointer w-full h-12 border flex justify-center items-center text-lg font-medium hover:bg-primary_grey_background" onClick={handleLogin}>
+              Log In
+            </div>
+          )}
         </div>
       )}
     </div>
