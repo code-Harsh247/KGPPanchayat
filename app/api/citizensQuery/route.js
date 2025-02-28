@@ -5,7 +5,7 @@ export async function POST(req) {
         const body = await req.json(); // Parse JSON body
 
         const {
-            citizens_id,
+            citizen_id,
             user_id,
             gender,
             date_of_birth,
@@ -19,9 +19,9 @@ export async function POST(req) {
         let sql = "SELECT * FROM citizens WHERE 1=1";
         let params = [];
 
-        if (citizens_id) {
-            sql += " AND citizens_id = $" + (params.length + 1);
-            params.push(citizens_id);
+        if (citizen_id) {
+            sql += " AND citizen_id = $" + (params.length + 1);
+            params.push(citizen_id);
         }
         if (user_id) {
             sql += " AND user_id = $" + (params.length + 1);
