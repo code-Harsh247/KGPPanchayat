@@ -12,6 +12,9 @@ const Page = () => {
   const fetchTables = async () => {
     try {
       const res = await axios.post("/api/fetchTables");
+
+      console.log("API Response:", res.data);
+
       if (Array.isArray(res.data.results)) {
         setTables(res.data.results);
       } else {
@@ -38,16 +41,20 @@ const Page = () => {
 
       <div className="w-full sm:w-[90%] lg:w-[80%] h-32 p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading ? (
-          <p className="text-blue-500">Loading tables...</p> // Show loading message
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
+            <div className="flex flex-col items-center">
+              <div className="w-8 h-8 border-4 border-primary_grey border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-primary_orange mt-2 font-Crimson">Loading tables...</p>
+            </div>
+          </div>
+          // Show loading message
         ) : tables.length > 0 ? (
           tables.map((table, index) => (
             <ReportComp
-              style={{ cursor: "grab" }} // Corrected cursor property
               key={index}
               title={formatTableName(table.table_name)}
-              description={`Records from ${formatTableName(table.table_name)}`}
+              description={`Records from ${table.table_name}`}
             />
-
           ))
         ) : (
           <p className="text-red-500">No tables found</p>
