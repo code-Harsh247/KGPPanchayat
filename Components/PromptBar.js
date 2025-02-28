@@ -17,11 +17,7 @@ const PromptBar = () => {
   };
 
   return (
-    <div className='absolute bottom-56 sm:bottom-24 md:bottom-0 left-1/2 
-        w-[90%] md:w-4/5 lg:w-1/2 
-        sm:h-52 md:h-auto 
-        -translate-x-1/2 rounded-sm bg-white 
-        border-2 border-primary_grey p-3 shadow-lg'>
+    <div className=''>
       
       <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-y-0 md:space-x-2 w-full">
         {/* Show Textarea on Mobile, Input on Larger Screens */}
