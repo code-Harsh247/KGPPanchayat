@@ -15,7 +15,7 @@ const adduser = async function POST(req) {
         }
 
         // Manually interpolate table name (unsafe for user input, must be validated)
-        const sql = `INSERT INTO ${table.toLowerCase()} (user_id, name, role, phone_number, password_hash) VALUES ($1, $2, $3, $4, $5)`;
+        const sql = `INSERT INTO users (user_id, name, role, phone_number, password_hash) VALUES ($1, $2, $3, $4, $5)`;
 
         let result = await query(sql, [id, name, role, phone_number, pass]);
 
