@@ -3,11 +3,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PromptBar from '@/Components/PromptBar';
 import ReportComp from '@/Components/ReportComp';
-import { formatTableName } from '@/lib/utils';
 
 const Page = () => {
-  const [tables, setTables] = React.useState([]);
-  const [loading, setLoading] = React.useState(true); // Track loading state  
+  const [tables, setTables] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchTables = async () => {
     try {
@@ -16,21 +15,19 @@ const Page = () => {
       console.log("API Response:", res.data);
 
       if (Array.isArray(res.data.results)) {
-        console.log("Fetched tables:", res.data.results);
         setTables(res.data.results);
       } else {
-        console.log("No valid tables found in API response.");
         setTables([]);
       }
     } catch (error) {
       console.error("Error fetching tables:", error);
       setTables([]);
     } finally {
-      setLoading(false); // Mark loading as done
+      setLoading(false);
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchTables();
   }, []);
 
@@ -42,7 +39,7 @@ const Page = () => {
         <PromptBar />
       </div>
 
-      <div className="w-full sm:w-[90%] lg:w-[80%] h-32 p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="w-full sm:w-[90%] lg:w-[80%] p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading ? (
           <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
             <div className="flex flex-col items-center">
@@ -50,13 +47,13 @@ const Page = () => {
               <p className="text-primary_orange mt-2 font-Crimson">Loading tables...</p>
             </div>
           </div>
-          // Show loading message
         ) : tables.length > 0 ? (
           tables.map((table, index) => (
             <ReportComp
               key={index}
-              title={formatTableName(table.table_name)}
-              description={`Records from ${table.table_name}`}
+              title={table.title}
+              name={table.name}
+              description={table.description || "No description available"} // Use 'description'
             />
           ))
         ) : (

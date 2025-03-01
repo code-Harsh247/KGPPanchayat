@@ -2,9 +2,9 @@ import { query } from "@/lib/database";
 //FOR FETCHING ALL TABLES IN THE DATABASE
 export async function POST(){
     try{
-        let sql = "\SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ";
+        let sql = "SELECT * FROM tables;";
         const results = await query(sql);
-        console.log(results);
+        // console.log(results);
         return Response.json({ results }, { status: 200 });
 
     }catch(e){
