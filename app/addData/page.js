@@ -15,6 +15,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/Components/ui/form";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/Components/ui/dropdown-menu";
 import { tableSchemas } from "@/lib/Schema";
 
 const AddDataForm = () => {

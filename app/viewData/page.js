@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import FilterSection from '@/Components/FilterSection';
 import { Button } from '@/Components/ui/btn';
-import { transformAgriFilters,transformCitizenFilters} from '@/lib/utils';
+import { transFormFilters} from '@/lib/utils';
 import {
     Table,
     TableBody,
@@ -37,18 +37,10 @@ const Page = () => {
             setLoading(true);
             setError(null);
 
-            const apiFilters = ()=>{
-                switch (name) {
-                    case "citizens":
-                        return transformCitizenFilters(filters);
-                    case "agri_records":
-                        return transformAgriFilters(filters);
-                    default:
-                        return null; // Or a default filter component if needed
-                }
-            }
+            const apiFilters = transFormFilters(filters);
 
             try {
+                console.log("filters:", filters);
                 console.log("ApiFilters:", apiFilters);
                 const response = await axios.post("/api/fetchData", {
                     table: name,
@@ -56,7 +48,7 @@ const Page = () => {
                     limit,
                     sort: sortColumn,
                     order: sortOrder,
-                    filters: apiFilters()
+                    filters: apiFilters
                 });
 
                 setColumns(response.data.columns);
