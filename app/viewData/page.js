@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import FilterSection from '@/Components/FilterSection';
 import { Button } from '@/Components/ui/btn';
-import { transformAgriFilters,transformCitizenFilters} from '@/lib/utils';
+import { transformAgriFilters,transformCitizenFilters,transformAssetsFilters} from '@/lib/utils';
 import {
     Table,
     TableBody,
@@ -43,6 +43,8 @@ const Page = () => {
                         return transformCitizenFilters(filters);
                     case "agri_records":
                         return transformAgriFilters(filters);
+                    case "assets":
+                        return transformAssetsFilters(filters);
                     default:
                         return null; // Or a default filter component if needed
                 }

@@ -140,7 +140,7 @@ const AssestsFilter = ({ onApply }) => {
                                 type="number"
                                 name="ValueMax"
                                 ref={maxValue}
-                                value={filters.valueMax}
+                                value={filters.maxValue}
                                 onChange={handleChange}
                                 placeholder="Max Value"
                                 className="w-full bg-white"
