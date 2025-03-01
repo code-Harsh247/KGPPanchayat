@@ -27,6 +27,7 @@ PG_PORT=5432
 PG_USER=
 PG_PASSWORD=
 PG_DATABASE=
+JWT_SECRET=Pookie
 ```
 
 For the database credentials, drop me a DM :)

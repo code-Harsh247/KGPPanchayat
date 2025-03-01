@@ -10,7 +10,7 @@ export default {
   	extend: {
   		colors: {
   			primary_orange: '#D57456',
-			secondary_orange: '#A25942',
+  			secondary_orange: '#A25942',
   			primary_black: '#0F172A',
   			primary_grey: '#D9D9D9',
   			primary_grey_background: '#F2F2F2',
@@ -69,6 +69,28 @@ export default {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		keyframes: {
+  			'accordion-down': {
+  				from: {
+  					height: '0'
+  				},
+  				to: {
+  					height: 'var(--radix-accordion-content-height)'
+  				}
+  			},
+  			'accordion-up': {
+  				from: {
+  					height: 'var(--radix-accordion-content-height)'
+  				},
+  				to: {
+  					height: '0'
+  				}
+  			}
+  		},
+  		animation: {
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out'
   		}
   	}
   },
