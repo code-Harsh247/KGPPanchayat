@@ -60,36 +60,52 @@ const Login = () => {
   }
 
   return (
-    <div className="w-screen h-auto flex flex-col items-center justify-center p-6 font-Crimson">
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6 font-Crimson relative">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.3 }}
-        className="w-full max-w-md flex flex-col items-center justify-center"
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-3xl flex flex-col items-center justify-center"
       >
-        {/* Image Section */}
-        <div className="w-40 sm:w-80 mb-6">
+        {/* Image Section with enhanced animation */}
+        <motion.div 
+          className="w-40 sm:w-80 mb-6"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
           <img src="./Images/Welcome-login.svg" alt="Welcome" className="w-full object-contain" />
-        </div>
+        </motion.div>
 
-        {/* Form Section */}
-        <div className="w-full max-w-sm bg-white shadow-md p-6 rounded-lg">
-          <h2 className="text-xl font-semibold text-center mb-4">Login</h2>
+        {/* Form Section with enhanced animation */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="w-full max-w-sm bg-white shadow-xl p-6 rounded-xl overflow-hidden"
+        >
+          <div className="border rounded-t-xl py-4 px-6 -mx-6 -mt-6 mb-6">
+            <h2 className="text-2xl text-black text-center">Login</h2>
+          </div>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               {/* Phone Number Field */}
               <FormField
                 control={form.control}
                 name="phone_number"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone Number</FormLabel>
+                    <FormLabel className="text-gray-700 font-medium">Phone Number</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder="Enter your phone number" {...field} />
+                      <Input 
+                        type="text" 
+                        placeholder="Enter your phone number" 
+                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-primary_orange focus:ring focus:ring-primary_orange focus:ring-opacity-50" 
+                        {...field} 
+                      />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -100,36 +116,63 @@ const Login = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel className="text-gray-700 font-medium">Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="Enter your password" {...field} />
+                      <Input 
+                        type="password" 
+                        placeholder="Enter your password" 
+                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-primary_orange focus:ring focus:ring-primary_orange focus:ring-opacity-50" 
+                        {...field} 
+                      />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
 
               {/* Submit Button */}
-              <Button type="submit" className="w-full" disabled={loading || authLoading}>
-                {(loading || authLoading) ? "Logging in..." : "Login"}
+              <Button 
+                type="submit" 
+                className="w-full px-6 py-2 bg-primary_orange hover:bg-secondary_orange text-white rounded-md transition-colors" 
+                disabled={loading || authLoading}
+              >
+                {(loading || authLoading) ? (
+                  <span className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Logging in...
+                  </span>
+                ) : "Login"}
               </Button>
             </form>
           </Form>
 
-          {/* Sign Up Link */}
-          <p className="text-center text-sm mt-4">
+          {/* Sign Up Link with animation */}
+          <motion.p 
+            className="text-center text-sm mt-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
             Don't have an account yet?{" "}
             <a href="/signup" className="text-blue-500 hover:underline">
               Sign up here
             </a>
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </motion.div>
 
-      {/* Bottom Image */}
-      <div className="absolute hidden lg:block z-10 left-0 bottom-0 w-1/4 xl:w-1/4">
+      {/* Bottom Image with enhanced animation */}
+      <motion.div 
+        className="absolute hidden lg:block z-10 left-0 bottom-0 w-1/4 xl:w-1/4"
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+      >
         <img src='./Images/LoginAuntie.svg' className="w-full object-contain" />
-      </div>
+      </motion.div>
     </div>
   );
 };
