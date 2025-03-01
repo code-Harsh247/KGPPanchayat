@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
-import CitizenFilter from '@/Components/filters/CitizenFilter';
+import FilterSection from '@/Components/FilterSection';
 import { Button } from '@/Components/ui/btn';
-import { toast } from 'sonner';
+import { transformAgriFilters,transformCitizenFilters} from '@/lib/utils';
 import {
     Table,
     TableBody,
@@ -37,74 +37,26 @@ const Page = () => {
             setLoading(true);
             setError(null);
 
-            // Transform filters from CitizenFilter component to API format
-            let apiFilters = {};
-
-            if (filters) {
-                // Gender filter
-                if (filters.gender) {
-                    apiFilters.gender = filters.gender;
-                }
-
-                // Date of Birth range
-                if (filters.dateOfBirthStart) {
-                    apiFilters.date_of_birth = {
-                        ...(apiFilters.date_of_birth || {}),
-                        gte: filters.dateOfBirthStart
-                    };
-                }
-
-                if (filters.dateOfBirthEnd) {
-                    apiFilters.date_of_birth = {
-                        ...(apiFilters.date_of_birth || {}),
-                        lte: filters.dateOfBirthEnd
-                    };
-                }
-
-                // Household ID range
-                if (filters.householdIdMin) {
-                    apiFilters.household_id = {
-                        ...(apiFilters.household_id || {}),
-                        gte: parseInt(filters.householdIdMin)
-                    };
-                }
-
-                if (filters.householdIdMax) {
-                    apiFilters.household_id = {
-                        ...(apiFilters.household_id || {}),
-                        lte: parseInt(filters.householdIdMax)
-                    };
-                }
-
-                // Education level
-                if (filters.educationLevel) {
-                    apiFilters.education_level = filters.educationLevel;
-                }
-
-                // Income range
-                if (filters.incomeMin) {
-                    apiFilters.income = {
-                        ...(apiFilters.income || {}),
-                        gte: parseInt(filters.incomeMin)
-                    };
-                }
-
-                if (filters.incomeMax) {
-                    apiFilters.income = {
-                        ...(apiFilters.income || {}),
-                        lte: parseInt(filters.incomeMax)
-                    };
+            const apiFilters = ()=>{
+                switch (name) {
+                    case "citizens":
+                        return transformCitizenFilters(filters);
+                    case "agri_records":
+                        return transformAgriFilters(filters);
+                    default:
+                        return null; // Or a default filter component if needed
                 }
             }
 
             try {
+                console.log("ApiFilters:", apiFilters);
                 const response = await axios.post("/api/fetchData", {
                     table: name,
                     page,
                     limit,
                     sort: sortColumn,
                     order: sortOrder,
-                    filters: apiFilters
+                    filters: apiFilters()
                 });
 
                 setColumns(response.data.columns);
@@ -140,7 +92,8 @@ const Page = () => {
             <h1 className="text-4xl sm:text-5xl md:text-6xl p-4 text-center">{decodedTitle}</h1>
 
             {/* Filter Section */}
-            <CitizenFilter onApply={handleApplyFilters} />
+        
+            <FilterSection handleApplyFilters={handleApplyFilters} name={name}/>
 
             <div className="w-[80%] p-6 mt-4 border">
                 <div className="w-full text-xl mb-4">Available Records:</div>
