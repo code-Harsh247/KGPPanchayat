@@ -25,6 +25,7 @@ const AgriFilter = ({ onApply }) => {
 
   const handleApply = () => {
     toast.success("Filters applied successfully");
+    console.log("Filters:", filters);
     onApply(filters);
   };
 
