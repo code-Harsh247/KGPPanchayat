@@ -15,12 +15,14 @@ const Navbar = () => {
   const loading = useAuthStore((state) => state.loading);
   const checkAuth = useAuthStore((state) => state.checkAuth);
   const role = useAuthStore((state) => state.role);
+  const logout = useAuthStore((state) => state.logout);
 
   // Check if user can add data (Admin or Panchayat Employee)
   const canAddData = isAuthenticated && (role === "Admin" || role === "Panchayat_Employee");
 
   useEffect(() => {
     checkAuth();
+    console.log("Role is ", role);
   }, []);
 
   // Navigate to login page
@@ -31,8 +33,8 @@ const Navbar = () => {
   // Logout and redirect
   const handleLogout = async () => {
     try {
-      await axios.post("/api/logout");
-      router.replace("/"); // Use Next.js navigation
+      await logout();
+      window.location.href = "/"; // Redirect to home page
     } catch (error) {
       console.error("Logout failed:", error);
     }

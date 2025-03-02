@@ -30,7 +30,7 @@ export default function FAQPage() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-3xl font-Crimson">
       <h1 className="text-3xl font-bold mb-2">Frequently Asked Questions</h1>
-      <p className="text-lg text-gray-600 mb-8">Find answers to common questions about our products and services.</p>
+      <p className="text-lg text-gray-600 mb-8">Find answers to common questions about YOU :)</p>
       
       <Accordion type="single" collapsible className="w-full">
         {faqItems.map((item, index) => (
@@ -48,7 +48,7 @@ export default function FAQPage() {
       <div className="mt-12 p-6 bg-gray-50 rounded-lg">
         <h2 className="text-xl font-semibold mb-4">Still have questions?</h2>
         <p className="mb-4">Our support team is ready to help you with any other questions you might have.</p>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-600 transition-colors">
+        <button className="px-4 py-2 bg-primary_orange text-white rounded hover:bg-secondary_orange transition-colors">
           Contact Support
         </button>
       </div>
