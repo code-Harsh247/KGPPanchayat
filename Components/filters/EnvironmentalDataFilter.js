@@ -17,8 +17,10 @@ const EnvironmentalDataFilter = ({ onApply }) => {
         soilQualityIndexMax: "",
         waterQualityIndexMin: "",
         waterQualityIndexMax: "",
-        yearMin:"",
-        yearMax:"",
+        yearMin: "",
+        yearMax: "",
+        treeCountMin: "",
+        treeCountMax: "",
         sortBy: "",
         sortOrder: "asc", // Default sort order
     });
@@ -42,8 +44,10 @@ const EnvironmentalDataFilter = ({ onApply }) => {
             soilQualityIndexMax: "",
             waterQualityIndexMin: "",
             waterQualityIndexMax: "",
-            yearMin:"",
-            yearMax:"",
+            yearMin: "",
+            yearMax: "",
+            treeCountMin: "",
+            treeCountMax: "",
             sortBy: "",
             sortOrder: "asc", // Default sort order
         });
@@ -63,7 +67,8 @@ const EnvironmentalDataFilter = ({ onApply }) => {
         { label: "Air Quality Index", value: "air_quality_index" },
         { label: "Soil Quality Index", value: "soil_quality_index" },
         { label: "Water Quality Index", value: "water_quality_index" },
-        { label: "Year", value: "year" }
+        { label: "Year", value: "year" },
+        { label: "Tree Count", value: "tree_count" },
     ];
 
     return (
@@ -71,8 +76,8 @@ const EnvironmentalDataFilter = ({ onApply }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Left Column */}
                 <div className="space-y-4">
-                    
-                <div className="w-full">
+
+                    <div className="w-full">
                         <label className="block text-sm font-medium mb-1">Air Quality Index Range</label>
                         <div className="flex flex-col space-y-2">
                             <Input
@@ -116,13 +121,33 @@ const EnvironmentalDataFilter = ({ onApply }) => {
                         </div>
                     </div>
 
-
+                    <div className="w-full">
+                        <label className="block text-sm font-medium mb-1">Number of Trees Range</label>
+                        <div className="flex flex-col space-y-2">
+                            <Input
+                                type="number"
+                                name="treeCountMin"
+                                value={filters.treeCountMin}
+                                onChange={handleChange}
+                                placeholder="Min Number of Trees"
+                                className="w-full bg-white"
+                            />
+                            <Input
+                                type="number"
+                                name="treeCountMax"
+                                value={filters.treeCountMax}
+                                onChange={handleChange}
+                                placeholder="Max Number of Trees"
+                                className="w-full bg-white"
+                            />
+                        </div>
+                    </div>
 
                 </div>
 
                 {/* Right Column */}
                 <div className="space-y-4">
-                <div className="w-full">
+                    <div className="w-full">
                         <label className="block text-sm font-medium mb-1">Year Range</label>
                         <div className="flex flex-col space-y-2">
                             <Input
@@ -144,7 +169,7 @@ const EnvironmentalDataFilter = ({ onApply }) => {
                         </div>
                     </div>
 
-                <div className="w-full">
+                    <div className="w-full">
                         <label className="block text-sm font-medium mb-1">Water Quality Index Range</label>
                         <div className="flex flex-col space-y-2">
                             <Input

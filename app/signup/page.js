@@ -42,7 +42,7 @@ const educationOptions = [
 const stage1Schema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     phone_number: z.string().min(10, "Phone number must be at least 10 digits"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
     role: z.enum(["Citizen", "Panchayat_Employee", "govtMonitors"]),
 });
 
