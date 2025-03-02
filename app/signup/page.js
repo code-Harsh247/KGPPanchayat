@@ -43,7 +43,7 @@ const stage1Schema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     phone_number: z.string().min(10, "Phone number must be at least 10 digits"),
     password: z.string().min(8, "Password must be at least 8 characters"),
-    role: z.enum(["Citizen", "Panchayat_Employee", "govtMonitors"]),
+    role: z.enum(["Citizen", "Panchayat_Employee", "Government_monitor"]),
 });
 
 // Schema for Stage 2 (Citizen)
@@ -210,7 +210,7 @@ const Signup = () => {
                                                     <Label htmlFor="employee">Panchayat Employee</Label>
                                                 </div>
                                                 <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem value="govtMonitors" id="monitor" />
+                                                    <RadioGroupItem value="Government_monitor" id="monitor" />
                                                     <Label htmlFor="monitor">Government Monitor</Label>
                                                 </div>
                                             </RadioGroup>
@@ -359,7 +359,7 @@ const Signup = () => {
                                 )}
 
                                 {/* Government Monitor Extra Field */}
-                                {role === "govtMonitors" && (
+                                {role === "Government_monitor" && (
                                     <div className="mb-4">
                                         <FormField control={form2.control} name="jurisdiction" render={({ field }) => (
                                             <FormItem>

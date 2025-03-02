@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Menu, X, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/States/auth";
+import axios from "axios";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,8 +30,13 @@ const Navbar = () => {
   };
 
   // Navigate to profile page
-  const handleProfile = () => {
-    router.push("/profile");
+  const handleLogout = async () => {
+    try {
+      await axios.post("/api/logout");
+      window.location.href = "/"; // Redirect to home page
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   const handleFAQs = () => {
@@ -78,11 +84,11 @@ const Navbar = () => {
             <Loader2 className="animate-spin w-1/2 h-1/2 text-primary_orange" />
           </div>
         ) : isAuthenticated ? (
-          <div className="cursor-pointer w-32 flex justify-center items-center text-lg font-medium border border-transparent hover:border-primary_grey hover:bg-[#F2F2F2] rounded-sm transition-all duration-300 ease-in-out active:scale-90" onClick={handleProfile}>
-            Profile
+          <div className="cursor-pointer bg-primary_orange w-32 flex justify-center items-center text-lg font-medium border border-transparent hover:border-primary_grey hover:bg-secondary_orange rounded-sm transition-all duration-300 ease-in-out active:scale-90 text-white" onClick={handleLogout}>
+            Log Out
           </div>
         ) : (
-          <div className="cursor-pointer w-32 flex justify-center items-center text-lg font-medium border border-transparent hover:border-primary_grey hover:bg-[#F2F2F2] rounded-sm transition-all duration-300 ease-in-out active:scale-90" onClick={handleLogin}>
+          <div className="cursor-pointer bg-primary_orange w-32 flex justify-center items-center text-lg font-medium border border-transparent hover:border-primary_grey hover:bg-secondary_orange rounded-sm transition-all duration-300 ease-in-out active:scale-90 text-white" onClick={handleLogin}>
             Log In
           </div>
         )}
@@ -116,8 +122,8 @@ const Navbar = () => {
               <Loader2 className="animate-spin w-6 h-6 text-primary_orange" />
             </div>
           ) : isAuthenticated ? (
-            <div className="cursor-pointer w-full h-12 border flex justify-center items-center text-lg font-medium hover:bg-primary_grey_background" onClick={handleProfile}>
-              Profile
+            <div className="cursor-pointer w-full h-12 border flex justify-center items-center text-lg font-medium hover:bg-primary_grey_background" onClick={handleLogout}>
+              Log Out
             </div>
           ) : (
             <div className="cursor-pointer w-full h-12 border flex justify-center items-center text-lg font-medium hover:bg-primary_grey_background" onClick={handleLogin}>
