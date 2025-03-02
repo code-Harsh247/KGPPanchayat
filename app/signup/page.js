@@ -11,6 +11,7 @@ import { Button } from "@/Components/ui/btn";
 import { Input } from "@/Components/ui/inputBox";
 import { RadioGroup, RadioGroupItem } from "@/Components/ui/radio-group";
 import { Label } from "@/Components/ui/label";
+import { useRouter } from "next/navigation";
 import {
     Form,
     FormControl,
@@ -25,7 +26,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Router } from "lucide-react";
 
 // education_level options
 const educationOptions = [
@@ -42,7 +43,7 @@ const stage1Schema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     phone_number: z.string().min(10, "Phone number must be at least 10 digits"),
     password: z.string().min(6, "Password must be at least 6 characters"),
-    role: z.enum(["Citizen", "Panchayat Employee", "Government Monitor"]),
+    role: z.enum(["Citizen", "Panchayat_Employee", "govtMonitors"]),
 });
 
 // Schema for Stage 2 (Citizen)
@@ -57,9 +58,8 @@ const citizenSchema = z.object({
 
 // Schema for Stage 2 (Panchayat Employee)
 const employeeSchema = citizenSchema.extend({
-    employeeId: z.string().min(3, "Enter a valid Employee ID"),
-    employeeRole: z.string().min(2, "Enter your role"),
-    joiningDate: z.string().min(1, "Joining date is required"),
+    employee_role: z.string().min(2, "Enter your role"),
+    joining_date: z.string().min(1, "Joining date is required"),
 });
 
 // Schema for Stage 2 (Government Monitor)
@@ -71,7 +71,7 @@ const Signup = () => {
     const [stage, setStage] = useState(1);
     const [role, setRole] = useState("");
     const [loading, setLoading] = useState(false);
-
+    const router = useRouter();
     // Stage 1 Form
     const form1 = useForm({
         resolver: zodResolver(stage1Schema),
@@ -87,7 +87,7 @@ const Signup = () => {
     const form2 = useForm({
         resolver: zodResolver(
             role === "Citizen" ? citizenSchema :
-            role === "Panchayat Employee" ? employeeSchema :
+            role === "Panchayat_Employee" ? employeeSchema :
             monitorSchema
         ),
         defaultValues: {
@@ -97,9 +97,8 @@ const Signup = () => {
             education_level: "",
             income: undefined,
             occupation: "",
-            employeeId: "",
-            employeeRole: "",
-            joiningDate: "",
+            employee_role: "",
+            joining_date: "",
             jurisdiction: "",
         },
         // Re-validate when role changes
@@ -116,9 +115,8 @@ const Signup = () => {
             education_level: "",
             income: undefined,
             occupation: "",
-            employeeId: "",
-            employeeRole: "",
-            joiningDate: "",
+            employee_role: "",
+            joining_date: "",
             jurisdiction: "",
         });
         setStage(2);
@@ -133,6 +131,7 @@ const Signup = () => {
             const response = await axios.post("/api/signUp", requestData);
             toast.success("Signup Successful!");
             console.log("User Created:", response.data);
+            router.push('/login');
         } catch (error) {
             console.error("Signup Error:", error.response?.data || error.message);
             toast.error(error.response?.data?.error || "Signup failed. Please try again.");
@@ -207,11 +206,11 @@ const Signup = () => {
                                                     <Label htmlFor="citizen">Citizen</Label>
                                                 </div>
                                                 <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem value="Panchayat Employee" id="employee" />
+                                                    <RadioGroupItem value="Panchayat_Employee" id="employee" />
                                                     <Label htmlFor="employee">Panchayat Employee</Label>
                                                 </div>
                                                 <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem value="Government Monitor" id="monitor" />
+                                                    <RadioGroupItem value="govtMonitors" id="monitor" />
                                                     <Label htmlFor="monitor">Government Monitor</Label>
                                                 </div>
                                             </RadioGroup>
@@ -232,7 +231,7 @@ const Signup = () => {
                         <Form {...form2}>
                             <form onSubmit={form2.handleSubmit(handleStage2Submit)}>
                                 {/* Common fields for Citizens & Employees */}
-                                {(role === "Citizen" || role === "Panchayat Employee") && (
+                                {(role === "Citizen" || role === "Panchayat_Employee") && (
                                     <div className="grid grid-cols-2 gap-4 mb-4">
                                         <FormField control={form2.control} name="gender" render={({ field }) => (
                                             <FormItem>
@@ -339,17 +338,9 @@ const Signup = () => {
                                 )}
 
                                 {/* Panchayat Employee Extra Fields */}
-                                {role === "Panchayat Employee" && (
+                                {role === "Panchayat_Employee" && (
                                     <div className="grid grid-cols-2 gap-4 mb-4">
-                                        <FormField control={form2.control} name="employeeId" render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Employee ID</FormLabel>
-                                                <FormControl><Input type="text" placeholder="Enter Employee ID" {...field} /></FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )} />
-
-                                        <FormField control={form2.control} name="employeeRole" render={({ field }) => (
+                                        <FormField control={form2.control} name="employee_role" render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Employee Role</FormLabel>
                                                 <FormControl><Input type="text" placeholder="Enter your role" {...field} /></FormControl>
@@ -357,7 +348,7 @@ const Signup = () => {
                                             </FormItem>
                                         )} />
 
-                                        <FormField control={form2.control} name="joiningDate" render={({ field }) => (
+                                        <FormField control={form2.control} name="joining_date" render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Joining Date</FormLabel>
                                                 <FormControl><Input type="date" {...field} /></FormControl>
@@ -368,7 +359,7 @@ const Signup = () => {
                                 )}
 
                                 {/* Government Monitor Extra Field */}
-                                {role === "Government Monitor" && (
+                                {role === "govtMonitors" && (
                                     <div className="mb-4">
                                         <FormField control={form2.control} name="jurisdiction" render={({ field }) => (
                                             <FormItem>

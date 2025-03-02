@@ -2,19 +2,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReportComp from '@/Components/ReportComp';
+import useAuthStore from '@/States/auth';
 
 const Page = () => {
   const [tables, setTables] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const role = useAuthStore((state) => state.role);
   const fetchTables = async () => {
     try {
-      const res = await axios.post("/api/fetchTables");
+      const res = await axios.post("/api/fetchTables",{
+        userRole: role
+      });
 
-      console.log("API Response:", res.data);
+      const allowedTables = res.data.tables; // Get filtered tables
+      console.log("Tables the user can access:", allowedTables);
 
-      if (Array.isArray(res.data.results)) {
-        setTables(res.data.results);
+      if (Array.isArray(allowedTables) && allowedTables.length > 0) {
+        setTables(allowedTables);
       } else {
         setTables([]);
       }
@@ -27,8 +31,8 @@ const Page = () => {
   };
 
   useEffect(() => {
-    fetchTables();
-  }, []);
+    if(role) fetchTables();
+  }, [role]);
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center p-4 sm:p-6">

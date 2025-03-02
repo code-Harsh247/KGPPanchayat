@@ -22,6 +22,11 @@ export async function POST(req) {
         }
 
         const user = result[0];
+        const role = user.role;
+        const user_id = user.user_id;
+        const userName = user.name;
+        const userPhone = user.phone_number;
+
         const isMatch = await bcrypt.compare(password, user.password_hash);
         if (!isMatch) {
             return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
@@ -38,7 +43,7 @@ export async function POST(req) {
             path: "/",
         });
 
-        return NextResponse.json({ success: true, message: "Login successful" });
+        return NextResponse.json({ success: true, UserRole: role, UserID: user.user_id, UserName: userName, UserPhone: userPhone });
 
     } catch (error) {
         console.error("Login error:", error);

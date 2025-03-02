@@ -1,14 +1,35 @@
 import { query } from "@/lib/database";
-//FOR FETCHING ALL TABLES IN THE DATABASE
-export async function POST(){
-    try{
-        let sql = "SELECT * FROM tables;";
-        const results = await query(sql);
-        // console.log(results);
-        return Response.json({ results }, { status: 200 });
 
-    }catch(e){
-        console.log("Error in POST /api/fetchTables", e);
+// Define table access permissions
+const rolePermissions = {
+    Admin: "*", // Admin can access all tables
+    Panchayat_Employee: ["agri_records", "land_records","assets","census_data","environmental_data","households","scheme_beneficiaries","welfare_schemes"] // Restricted access
+};
+
+export async function POST(req) {
+    try {
+        // Get user role from the request (Assuming it comes from headers)
+        const { userRole } = await req.json(); // Modify as per your auth system
+        console.log("ROLE : ", userRole);       
+        if (!userRole || !rolePermissions[userRole]) {
+            return Response.json({ message: "Unauthorized access" }, { status: 403 });
+        }
+
+        // Fetch all tables from PostgreSQL
+        let sql = `SELECT * FROM tables;`;
+        const results = await query(sql);
+        console.log("Results : ", results);
+
+        // Filter tables based on userRole permissions
+        const allowedTables =
+        rolePermissions[userRole] === "*" 
+            ? results 
+            : results.filter(table => rolePermissions[userRole].includes(table.name));    
+        console.log("Allowed Tables : ", allowedTables);
+        return Response.json({ tables: allowedTables }, { status: 200 });
+
+    } catch (e) {
+        console.error("Error in POST /api/fetchTables", e);
         return Response.json({ message: "Something went wrong" }, { status: 500 });
     }
 }
