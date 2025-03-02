@@ -7,6 +7,8 @@ import LandRecordsFilter from "./filters/LandRecordsFilter";
 import PanchayatEmployeesFilter from "./filters/PanchayatEmployeesFilter";
 import SchemeBeneficiariesFilter from "./filters/SchemeBeneficiariesFilter";
 import WelfareSchemesFilter from "./filters/WelfareSchemesFilter";
+import CensusDataFilter from "./filters/CensusDataFilter";
+import EnvironmentalDataFilter from "./filters/EnvironmentalDataFilter";
 
 
 const FilterSection = ({ name, handleApplyFilters }) => {
@@ -30,6 +32,10 @@ const FilterSection = ({ name, handleApplyFilters }) => {
         return <SchemeBeneficiariesFilter onApply={handleApplyFilters}/>;
       case "welfare_schemes":
         return <WelfareSchemesFilter onApply={handleApplyFilters} />;
+      case "census_data":
+        return <CensusDataFilter onApply={handleApplyFilters} />;
+      case "environmental_data":
+        return <EnvironmentalDataFilter onApply={handleApplyFilters} />;
       default:
         return null; // Or a default filter component if needed
     }
