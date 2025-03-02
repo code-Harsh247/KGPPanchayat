@@ -3,7 +3,7 @@ import { query } from "@/lib/database";
 // Define table access permissions
 const rolePermissions = {
     Admin: "*", // Admin can access all tables
-    Panchayat_Employee: ["agri_records", "land_records","assets","census_data","environmental_data","households","scheme_beneficiaries","welfare_schemes"], // Restricted access
+    Panchayat_Employee: ["agri_records", "land_records","assets","census_data","environmental_data","households","scheme_beneficiaries","welfare_schemes"], 
     Citizen: ["households","assets","agri_records","scheme_beneficiaries","welfare_schemes","census_data","environmental_data"],
     Government_monitor: ["welfare_schemes","scheme_beneficiaries","census_data","environmental_data"],
 };
