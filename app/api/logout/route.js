@@ -1,12 +1,11 @@
-// app/api/logout/route.js
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 export async function POST() {
   try {
-    // Clear the auth cookie
-    cookies().delete("auth_token");
-    
+    // Delete the auth cookie
+    cookies().set("auth_token", "", { expires: new Date(0) });
+
     return NextResponse.json({ success: true, message: "Logout successful" });
   } catch (error) {
     console.error("Logout error:", error);
