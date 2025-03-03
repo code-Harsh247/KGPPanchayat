@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/ui/tabs';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Loader2 } from 'lucide-react';
 
