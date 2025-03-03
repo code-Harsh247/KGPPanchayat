@@ -64,9 +64,22 @@ const Analytics = () => {
 
     // Specific analytics fetching functions
     const fetchCensusAnalytics = async () => {
-        const response = await axios.get("/api/analytics/census");
-        setAnalyticsData(response.data);
+        try {
+            const response1 = await axios.get("/api/analytics/census");
+            const response2 = await axios.get("/api/analytics/censusMetrics");
+    
+            // Merge both responses
+            const combinedData = {
+                ...response1.data, // Census data
+                ...response2.data  // Metrics data
+            };
+    
+            setAnalyticsData(combinedData);
+        } catch (error) {
+            console.error("Error fetching census analytics:", error);
+        }
     };
+    
 
     const fetchEnvironmentalAnalytics = async () => {
         const response = await axios.get("/api/analytics/environmental");
@@ -203,6 +216,7 @@ const Analytics = () => {
 
     // Render functions for each table
     const renderCensusAnalytics = () => {
+        console.log(analyticsData);
         return (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                 <Card>
@@ -212,7 +226,7 @@ const Analytics = () => {
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={300}>
-                            <LineChart data={mockPopulationData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                            <LineChart data={analyticsData.populationData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="year" />
                                 <YAxis />
@@ -233,7 +247,7 @@ const Analytics = () => {
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={300}>
-                            <LineChart data={mockBirthDeathData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                            <LineChart data={analyticsData.birthDeathData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="year" />
                                 <YAxis />
@@ -253,7 +267,7 @@ const Analytics = () => {
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={300}>
-                            <LineChart data={mockMarriageDivorceData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                            <LineChart data={analyticsData.marriageDivorceData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="year" />
                                 <YAxis />
@@ -274,20 +288,24 @@ const Analytics = () => {
                     <CardContent>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="bg-blue-50 p-4 rounded-md">
-                                <h3 className="text-xl font-bold text-blue-700">7,350</h3>
-                                <p className="text-sm text-blue-600">Total Population (2022)</p>
+                                <h3 className="text-xl font-bold text-blue-700">{analyticsData.populationGrowthRate}%</h3>
+                                <p className="text-sm text-blue-600">Population Growth rate %</p>
                             </div>
                             <div className="bg-green-50 p-4 rounded-md">
-                                <h3 className="text-xl font-bold text-green-700">+1.4%</h3>
-                                <p className="text-sm text-green-600">Annual Growth Rate</p>
+                                <h3 className="text-xl font-bold text-green-700">{analyticsData.birthRate}</h3>
+                                <p className="text-sm text-green-600">Birth Rate per 1000 people</p>
                             </div>
                             <div className="bg-purple-50 p-4 rounded-md">
-                                <h3 className="text-xl font-bold text-purple-700">130</h3>
-                                <p className="text-sm text-purple-600">Births (2022)</p>
+                                <h3 className="text-xl font-bold text-purple-700">{analyticsData.deathRate}</h3>
+                                <p className="text-sm text-purple-600">Death rate per 1000 people</p>
                             </div>
                             <div className="bg-orange-50 p-4 rounded-md">
-                                <h3 className="text-xl font-bold text-orange-700">51.0%</h3>
-                                <p className="text-sm text-orange-600">Male Population %</p>
+                                <h3 className="text-xl font-bold text-orange-700">{analyticsData.marriageRate}</h3>
+                                <p className="text-sm text-orange-600">Marriages Growth rate per 1000 people</p>
+                            </div>
+                            <div className="bg-orange-50 p-4 rounded-md">
+                                <h3 className="text-xl font-bold text-orange-700">{analyticsData.divorceRate}</h3>
+                                <p className="text-sm text-orange-600">Divorce Growth rate per 1000 people</p>
                             </div>
                         </div>
                     </CardContent>
@@ -673,7 +691,7 @@ const Analytics = () => {
                     {name === "environmental_data" && <TabsTrigger value="trends">Trends</TabsTrigger>}
                     {name === "welfare_schemes" && <TabsTrigger value="impact">Impact</TabsTrigger>}
                     {name === "agri_records" && <TabsTrigger value="production">Production</TabsTrigger>}
-                    {name === "assets" && <TabsTrigger value="valuation">Valuation</TabsTrigger>}
+                    {name === "assets" && <TabsTrigger value="valuation">AI Evaluation</TabsTrigger>}
                 </TabsList>
 
                 {/* Tab Content */}
