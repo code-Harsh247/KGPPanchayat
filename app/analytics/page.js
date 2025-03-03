@@ -67,19 +67,19 @@ const Analytics = () => {
         try {
             const response1 = await axios.get("/api/analytics/census");
             const response2 = await axios.get("/api/analytics/censusMetrics");
-    
+
             // Merge both responses
             const combinedData = {
                 ...response1.data, // Census data
                 ...response2.data  // Metrics data
             };
-    
+
             setAnalyticsData(combinedData);
         } catch (error) {
             console.error("Error fetching census analytics:", error);
         }
     };
-    
+
 
     const fetchEnvironmentalAnalytics = async () => {
         const response = await axios.get("/api/analytics/environmental");
@@ -88,6 +88,7 @@ const Analytics = () => {
 
     const fetchWelfareAnalytics = async () => {
         const response = await axios.get("/api/analytics/welfare");
+        console.log(response.data);
         setAnalyticsData(response.data);
     };
 
@@ -210,8 +211,8 @@ const Analytics = () => {
         { type: "Furniture", value: 250000 },
         { type: "Infrastructure", value: 1200000 },
         { type: "Vehicle", value: 800000 },
-        { type: "Building", value: 3500000},
-        { type: "Equipment", value: 650000},
+        { type: "Building", value: 3500000 },
+        { type: "Equipment", value: 650000 },
     ];
 
     // Render functions for each table
@@ -289,23 +290,23 @@ const Analytics = () => {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="bg-blue-50 p-4 rounded-md">
                                 <h3 className="text-xl font-bold text-blue-700">{analyticsData.populationGrowthRate}%</h3>
-                                <p className="text-sm text-blue-600">Population Growth rate %</p>
+                                <p className="text-sm text-blue-600">Population Growth rate % (Last 5 years)</p>
                             </div>
                             <div className="bg-green-50 p-4 rounded-md">
                                 <h3 className="text-xl font-bold text-green-700">{analyticsData.birthRate}</h3>
-                                <p className="text-sm text-green-600">Birth Rate per 1000 people</p>
+                                <p className="text-sm text-green-600">Births per 1000 people</p>
                             </div>
                             <div className="bg-purple-50 p-4 rounded-md">
                                 <h3 className="text-xl font-bold text-purple-700">{analyticsData.deathRate}</h3>
-                                <p className="text-sm text-purple-600">Death rate per 1000 people</p>
+                                <p className="text-sm text-purple-600">Deaths per 1000 people</p>
                             </div>
                             <div className="bg-orange-50 p-4 rounded-md">
                                 <h3 className="text-xl font-bold text-orange-700">{analyticsData.marriageRate}</h3>
-                                <p className="text-sm text-orange-600">Marriages Growth rate per 1000 people</p>
+                                <p className="text-sm text-orange-600">Marriagess per 1000 people</p>
                             </div>
                             <div className="bg-orange-50 p-4 rounded-md">
                                 <h3 className="text-xl font-bold text-orange-700">{analyticsData.divorceRate}</h3>
-                                <p className="text-sm text-orange-600">Divorce Growth rate per 1000 people</p>
+                                <p className="text-sm text-orange-600">Divorces per 1000 people</p>
                             </div>
                         </div>
                     </CardContent>
@@ -410,27 +411,27 @@ const Analytics = () => {
 
     const renderWelfareAnalytics = () => {
         return (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div className="flex flex-col gap-6 mt-6">
                 <Card>
                     <CardHeader>
                         <CardTitle>Most Subscribed Welfare Schemes</CardTitle>
                         <CardDescription>Distribution of beneficiaries across schemes</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <ResponsiveContainer width="100%" height={300}>
+                        <ResponsiveContainer width="100%" height={450}>
                             <PieChart>
                                 <Pie
-                                    data={mockWelfareData}
+                                    data={analyticsData}
                                     cx="50%"
                                     cy="50%"
                                     labelLine={false}
-                                    outerRadius={80}
+                                    outerRadius={150}
                                     fill="#8884d8"
                                     dataKey="beneficiaries"
                                     nameKey="name"
                                     label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                                 >
-                                    {mockWelfareData.map((entry, index) => (
+                                    {analyticsData.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
@@ -447,11 +448,11 @@ const Analytics = () => {
                         <CardDescription>Allocation of resources per scheme</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <BarChart data={mockWelfareData} layout="vertical" margin={{ top: 5, right: 30, left: 100, bottom: 5 }}>
+                        <ResponsiveContainer width="100%" height={450}>
+                            <BarChart data={analyticsData} layout="vertical" margin={{ top: 5, right: 30, left: 120, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis type="number" />
-                                <YAxis type="category" dataKey="name" width={100} />
+                                <YAxis type="category" dataKey="name" width={120} />
                                 <Tooltip />
                                 <Legend />
                                 <Bar dataKey="budget" fill="#8884d8" name="Budget (₹)" />
@@ -461,7 +462,7 @@ const Analytics = () => {
                     </CardContent>
                 </Card>
 
-                <Card className="md:col-span-2">
+                <Card>
                     <CardHeader>
                         <CardTitle>Welfare Scheme Performance Metrics</CardTitle>
                         <CardDescription>Key performance indicators for each scheme</CardDescription>
@@ -479,7 +480,7 @@ const Analytics = () => {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {mockWelfareData.map((scheme, index) => (
+                                    {analyticsData.map((scheme, index) => (
                                         <tr key={index}>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{scheme.name}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{scheme.beneficiaries}</td>
