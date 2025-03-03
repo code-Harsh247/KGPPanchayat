@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 import FilterSection from '@/Components/FilterSection';
 import { Button } from '@/Components/ui/btn';
@@ -15,13 +15,14 @@ import {
     TableRow,
 } from "@/Components/ui/table";
 import { convertJsonToCsv, downloadCsv } from "@/lib/utils";
-import { Pencil, Trash2 } from 'lucide-react'; // Import icons
-import useAuthStore from '@/States/auth'; // Import the auth store
+import { Pencil, Trash2, BarChart } from 'lucide-react'; // Added BarChart icon
+import useAuthStore from '@/States/auth';
 import { tablePrimaryKeys } from '@/lib/Schema';
-import { toast } from 'sonner'; // Import toast
-import EditDataModal from '@/Components/EditDataModal'; // Import the EditDataModal component
+import { toast } from 'sonner';
+import EditDataModal from '@/Components/EditDataModal';
 
 const Page = () => {
+    const router = useRouter(); // Added router for navigation
     const searchParams = useSearchParams();
     const name = searchParams.get('name');
     const decodedTitle = searchParams.get('title');
@@ -29,7 +30,7 @@ const Page = () => {
     // Get user role from auth store
     const { role } = useAuthStore();
     const [editingRecord, setEditingRecord] = useState(null);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // State for controlling the modal
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [data, setData] = useState([]);
     const [columns, setColumns] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -38,12 +39,16 @@ const Page = () => {
     const [limit] = useState(25);
     const [sortColumn, setSortColumn] = useState("invoice");
     const [sortOrder, setSortOrder] = useState("asc");
-    const [filters, setFilters] = useState(null); // flip between 0 and 1
+    const [filters, setFilters] = useState(null);
     const [columnsWithTypes, setColumsWithTypes] = useState({});
     const [downloadData, setDownloadData] = useState([]);
     const [downloadLoading, setDownloadLoading] = useState(false);
-    // Add a refreshTrigger state to force data refresh when needed
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+    // Function to navigate to Analytics page
+    const handleAnalyticsClick = () => {
+        router.push(`/analytics?name=${name}&title=${encodeURIComponent(decodedTitle)}`);
+    };
 
     // Function to check if user has edit permissions
     const hasEditPermission = () => {
@@ -59,9 +64,7 @@ const Page = () => {
     const fetchData = async () => {
         setLoading(true);
         setError(null);
-
         const apiFilters = transFormFilters(filters);
-
         try {
             const response = await axios.post("/api/fetchData", {
                 table: name,
@@ -71,7 +74,6 @@ const Page = () => {
                 order: sortOrder,
                 filters: apiFilters
             });
-
             setColumns(response.data.columns);
             setColumsWithTypes(response.data.columnsWithTypes);
             setData(response.data.records);
@@ -79,10 +81,9 @@ const Page = () => {
             console.error("Error fetching data:", err);
             setError("Failed to fetch data");
         }
-
         setLoading(false);
     };
-
+    
     useEffect(() => {
         fetchData();
     }, [name, page, limit, sortColumn, sortOrder, filters, refreshTrigger]);
@@ -104,9 +105,7 @@ const Page = () => {
     const handleDownload = async () => {
         setDownloadLoading(true);
         setError(null);
-
         const apiFilters = transFormFilters(filters);
-
         try {
             const response = await axios.post("/api/fetchData", {
                 table: name,
@@ -116,15 +115,12 @@ const Page = () => {
                 order: sortOrder,
                 filters: apiFilters
             });
-
             const csvData = convertJsonToCsv(response.data.records);
             setDownloadData(csvData);
-
             // Delay for 1 second before enabling button again
             setTimeout(() => {
                 setDownloadLoading(false);
             }, 1000);
-
         } catch (err) {
             console.error("Error fetching download data:", err);
             setError("Failed to fetch download data");
@@ -158,9 +154,7 @@ const Page = () => {
         if (!confirm(`Are you sure you want to delete this record?`)) {
             return;
         }
-
         try {
-
             const response = await axios.delete("/api/deleteRecord", {
                 data: { // Pass as request body
                     table: name,
@@ -168,7 +162,6 @@ const Page = () => {
                     primaryKeyColumn: rowData[primaryKeyName] // Actual value
                 }
             });
-
             if (response.data.success) {
                 // Remove the deleted record from the local state
                 setData(prevData => prevData.filter(row =>
@@ -193,10 +186,8 @@ const Page = () => {
     return (
         <div className="w-full flex flex-col items-center font-Crimson">
             <h1 className="text-4xl sm:text-5xl md:text-6xl p-4 text-center">{decodedTitle}</h1>
-
             {/* Filter Section */}
             <FilterSection handleApplyFilters={handleApplyFilters} name={name} />
-
             <div className="w-[80%] p-6 mt-4 border ">
                 <div className="w-full text-xl mb-4 flex justify-between">
                     <div className="flex gap-2">
@@ -215,6 +206,17 @@ const Page = () => {
                                 <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
                                 <path d="M3 21v-5h5"></path>
                             </svg>
+                        </Button>
+                        {/* Analytics Button */}
+                        <Button
+                            onClick={handleAnalyticsClick}
+                            variant="secondary"
+                            className="active:scale-95 transition-all duration-300 ease-in-out"
+                        >
+                            <div className="flex items-center gap-2">
+                                <BarChart className="h-5 w-5" />
+                                Analytics
+                            </div>
                         </Button>
                         <Button
                             onClick={handleDownload}
@@ -238,9 +240,7 @@ const Page = () => {
                             </div>
                         </Button>
                     </div>
-
                 </div>
-
                 {/* Loading & Error Handling */}
                 {loading ? (
                     <p className="text-center text-gray-500">Loading data...</p>
@@ -310,7 +310,6 @@ const Page = () => {
                         </TableBody>
                     </Table>
                 )}
-
                 {/* Pagination Controls */}
                 <div className="flex justify-between items-center mt-4">
                     <Button
@@ -329,11 +328,10 @@ const Page = () => {
                     </Button>
                 </div>
             </div>
-
             {/* Edit Modal Component */}
             <EditDataModal
                 isOpen={isEditModalOpen}
-                onClose={() => handleModalClose(true)} // Automatically refresh when modal is closed
+                onClose={() => handleModalClose(true)}
                 tableName={name}
                 recordData={editingRecord}
                 title={decodedTitle}
