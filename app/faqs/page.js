@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useRef } from "react"
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/Components/ui/accordion"
 import CreatorCard from "@/Components/CreatorCard"
 import { RefreshCw } from "lucide-react"
 import { Button } from "@/Components/ui/btn"
