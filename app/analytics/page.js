@@ -83,6 +83,7 @@ const Analytics = () => {
 
     const fetchEnvironmentalAnalytics = async () => {
         const response = await axios.get("/api/analytics/environmental");
+        console.log(response.data);
         setAnalyticsData(response.data);
     };
 
@@ -325,7 +326,7 @@ const Analytics = () => {
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={300}>
-                            <LineChart data={mockEnvironmentalData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                            <LineChart data={analyticsData.environmentalData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="year" />
                                 <YAxis />
@@ -346,7 +347,7 @@ const Analytics = () => {
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={300}>
-                            <LineChart data={mockTreeData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                            <LineChart data={analyticsData.treeData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="year" />
                                 <YAxis />
@@ -365,7 +366,7 @@ const Analytics = () => {
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={300}>
-                            <BarChart data={[mockEnvironmentalData[mockEnvironmentalData.length - 1]]} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                            <BarChart data={[analyticsData.environmentalData[analyticsData.environmentalData.length - 1]]} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="year" />
                                 <YAxis />
@@ -387,20 +388,20 @@ const Analytics = () => {
                     <CardContent>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="bg-blue-50 p-4 rounded-md">
-                                <h3 className="text-xl font-bold text-blue-700">82</h3>
-                                <p className="text-sm text-blue-600">Air Quality Index (2022)</p>
+                                <h3 className="text-xl font-bold text-blue-700">{analyticsData.metrics.avgAirQuality}</h3>
+                                <p className="text-sm text-blue-600">Air Quality Index (last 5 years)</p>
                             </div>
                             <div className="bg-green-50 p-4 rounded-md">
-                                <h3 className="text-xl font-bold text-green-700">17,500</h3>
-                                <p className="text-sm text-green-600">Tree Count (2022)</p>
+                                <h3 className="text-xl font-bold text-green-700">{analyticsData.metrics.avgWaterQuality}</h3>
+                                <p className="text-sm text-green-600">Water Quality Index (last 5 years)</p>
                             </div>
                             <div className="bg-purple-50 p-4 rounded-md">
-                                <h3 className="text-xl font-bold text-purple-700">84</h3>
-                                <p className="text-sm text-purple-600">Water Quality Index</p>
+                                <h3 className="text-xl font-bold text-purple-700">{analyticsData.metrics.avgSoilQuality}</h3>
+                                <p className="text-sm text-purple-600">Soil Quality Index (last 5 years)</p>
                             </div>
                             <div className="bg-orange-50 p-4 rounded-md">
-                                <h3 className="text-xl font-bold text-orange-700">+16.7%</h3>
-                                <p className="text-sm text-orange-600">Tree Growth (5 Years)</p>
+                                <h3 className="text-xl font-bold text-orange-700">{analyticsData.metrics.treeGrowthPercentage}%</h3>
+                                <p className="text-sm text-orange-600">Avg Tree Growth (5 Years)</p>
                             </div>
                         </div>
                     </CardContent>
@@ -641,7 +642,7 @@ const Analytics = () => {
                                     nameKey="type"
                                     label={({ type, percent }) => `${type}: ${(percent * 100).toFixed(0)}%`}
                                 >
-                                    {mockAssetData.map((entry, index) => (
+                                    {analyticsData.assetData.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
