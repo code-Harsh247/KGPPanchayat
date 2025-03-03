@@ -70,7 +70,7 @@ const useAuthStore = create(
       logout: async () => {
         try {
           // Optional: call logout API if you have one
-          // await axios.post('/api/logout');
+          await axios.post('/api/logout');
           set({
             isAuthenticated: false,
             role: null,
@@ -79,6 +79,7 @@ const useAuthStore = create(
             userPhone: null,
             error: null
           });
+          localStorage.removeItem('auth-storage');  
           return { success: true };
         } catch (error) {
           return { success: false, error: error.message };

@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/Components/ui/btn";
 import { Input } from "@/Components/ui/inputBox";
+import { Eye, EyeOff } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -33,7 +34,8 @@ const Login = () => {
   const router = useRouter();
   const { login, loading: authLoading, error: authError } = useAuthStore();
   const [loading, setLoading] = useState(false);
-  
+  const [showPassword, setShowPassword] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: { phone_number: "", password: "" },
@@ -84,8 +86,8 @@ const Login = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="w-full max-w-sm bg-white shadow-xl p-6 rounded-xl overflow-hidden"
         >
-          <div className="border rounded-t-xl py-4 px-6 -mx-6 -mt-6 mb-6">
-            <h2 className="text-2xl text-black text-center">Login</h2>
+          <div className="border bg-primary_orange rounded-t-xl py-4 px-6 -mx-6 -mt-6 mb-6">
+            <h2 className="text-2xl text-white text-center">Login</h2>
           </div>
 
           <Form {...form}>
