@@ -95,6 +95,7 @@ const Analytics = () => {
 
     const fetchAgricultureAnalytics = async () => {
         const response = await axios.get("/api/analytics/agriculture");
+        console.log(response.data);
         setAnalyticsData(response.data);
     };
 
@@ -509,7 +510,7 @@ const Analytics = () => {
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={300}>
-                            <BarChart data={mockCropData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                            <BarChart data={analyticsData.cropData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="crop" />
                                 <YAxis />
@@ -528,7 +529,7 @@ const Analytics = () => {
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={300}>
-                            <LineChart data={mockYieldData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                            <LineChart data={analyticsData.yieldData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="year" />
                                 <YAxis />
@@ -559,7 +560,7 @@ const Analytics = () => {
                                     nameKey="crop"
                                     label={({ crop, percent }) => `${crop}: ${(percent * 100).toFixed(0)}%`}
                                 >
-                                    {mockCropData.map((entry, index) => (
+                                    {analyticsData.cropData.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
@@ -578,20 +579,12 @@ const Analytics = () => {
                     <CardContent>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="bg-blue-50 p-4 rounded-md">
-                                <h3 className="text-xl font-bold text-blue-700">1,620</h3>
-                                <p className="text-sm text-blue-600">Total Yield (2022)</p>
+                                <h3 className="text-xl font-bold text-blue-700">{analyticsData.metrics.avgAnnualYield}</h3>
+                                <p className="text-sm text-blue-600">Average Annual Yield</p>
                             </div>
                             <div className="bg-green-50 p-4 rounded-md">
-                                <h3 className="text-xl font-bold text-green-700">+11.7%</h3>
-                                <p className="text-sm text-green-600">Yield Growth (5 Years)</p>
-                            </div>
-                            <div className="bg-purple-50 p-4 rounded-md">
-                                <h3 className="text-xl font-bold text-purple-700">Rice</h3>
-                                <p className="text-sm text-purple-600">Highest Yielding Crop</p>
-                            </div>
-                            <div className="bg-orange-50 p-4 rounded-md">
-                                <h3 className="text-xl font-bold text-orange-700">5</h3>
-                                <p className="text-sm text-orange-600">Major Crops Cultivated</p>
+                                <h3 className="text-xl font-bold text-green-700">{analyticsData.metrics.yieldGrowthPercentage}</h3>
+                                <p className="text-sm text-green-600">Yield Growth %</p>
                             </div>
                         </div>
                     </CardContent>
