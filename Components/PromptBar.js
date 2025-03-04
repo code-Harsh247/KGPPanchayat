@@ -6,7 +6,8 @@ import { Button } from "./ui/btn";
 import {useRouter} from "next/navigation";
 import axios from "axios";
 import useSQLStore from "@/States/sqlStore";
-import { set } from "zod";
+import useAuthStore from '@/States/auth';
+import { toast } from "sonner";
 
 const PromptBar = () => {
   const inputRef = useRef(null);
@@ -15,6 +16,8 @@ const PromptBar = () => {
   const [sqlQuery, setSqlQuery] = useState("");
   const router = useRouter();
   const { setGenSqlQuery } = useSQLStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const role = useAuthStore((state) => state.role);
 
   const handleSubmit = async () => {
     const prompt =
@@ -24,10 +27,18 @@ const PromptBar = () => {
 
     if (!prompt) return;
 
+
+    if(!isAuthenticated || !role){
+      toast.error('User role not found. Try Logging in again'); 
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setSqlQuery(""); // Reset previous SQL query
 
     try {
+
       // Call the AI API to get the SQL query
       const response = await axios.post("/api/ai", { prompt });
 

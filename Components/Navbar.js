@@ -5,6 +5,8 @@ import { Menu, X, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/States/auth";
 import axios from "axios";
+import { toast } from "sonner";
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +43,15 @@ const Navbar = () => {
   };
 
   const handleFAQs = () => router.push("/faqs");
-  const handleViewReports = () => router.push("/viewReports");
+  const handleViewReports = () => {
+    if(role){
+      router.push("/viewReports");
+    }
+    else {
+      toast.error('User role not found. Try Logging in again');
+    }
+    
+  }
   const handleAddData = () => router.push("/selectTable");
   const goToHome = () => router.push("/");
 
