@@ -114,7 +114,7 @@ export default function FAQPage() {
     {
       name: "Harsh",
       description: "Forever Yearning",
-      images: ["/Images/Harsh1.jpg", "/Images/Harsh2.jpg", "/Images/Harsh3.jpg", "/Images/Harsh4.jpg"]
+      images: ["/Images/Harsh2.jpg", "/Images/Harsh3.jpg", "/Images/Harsh4.jpg"]
     },
     {
       name: "Malav",
