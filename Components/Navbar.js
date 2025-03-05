@@ -119,7 +119,7 @@ const Navbar = () => {
 
       {/* Mobile Dropdown Menu */}
       {isOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white flex flex-col items-center md:hidden">
+        <div className="absolute top-12 left-0 z-10 w-full bg-white flex flex-col items-center md:hidden">
           <div className="cursor-pointer w-full h-12 border flex justify-center items-center text-lg font-medium hover:bg-primary_grey_background" onClick={handleFAQs}>
             FAQs
           </div>

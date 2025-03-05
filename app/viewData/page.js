@@ -83,7 +83,7 @@ const Page = () => {
         }
         setLoading(false);
     };
-    
+
     useEffect(() => {
         fetchData();
     }, [name, page, limit, sortColumn, sortOrder, filters, refreshTrigger]);
@@ -189,15 +189,15 @@ const Page = () => {
             {/* Filter Section */}
             <FilterSection handleApplyFilters={handleApplyFilters} name={name} />
             <div className="w-[80%] p-6 mt-4 border ">
-                <div className="w-full text-xl mb-4 flex justify-between">
-                    <div className="flex gap-2">
+                <div className="w-full text-xl mb-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div className="flex gap-2 items-center">
                         <p>Available Records:</p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap justify-center sm:justify-end gap-2">
                         <Button
                             onClick={refreshData}
                             variant="outline"
-                            className="ml-4 h-full px-2"
+                            className="h-full px-2"
                             title="Refresh data"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-refresh-cw">
@@ -222,7 +222,7 @@ const Page = () => {
                             onClick={handleDownload}
                             variant="default"
                             className="active:scale-95 transition-all duration-300 ease-in-out"
-                            disabled={downloadLoading} // Disable when loading
+                            disabled={downloadLoading}
                         >
                             <div className="flex items-center gap-2">
                                 {downloadLoading ? (
