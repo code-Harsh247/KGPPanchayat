@@ -61,6 +61,13 @@ const PromptBar = () => {
     }
   }, [sqlQuery]);
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) { 
+      event.preventDefault(); // Prevents new lines in the textarea
+      handleSubmit();
+    }
+  };
+
   return (
     <div className="">
       <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-y-0 md:space-x-2 w-full">
